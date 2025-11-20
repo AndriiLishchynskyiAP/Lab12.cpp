@@ -17,6 +17,7 @@ public:
     bool operator>(const Vector& other) const;
     double operator*(const Vector& other) const;
 
+    size_t size() const;
     void print() const;
 };
 
