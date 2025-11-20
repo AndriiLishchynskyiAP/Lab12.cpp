@@ -1,53 +1,41 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
 #include "Vector.hpp"
+#include <cmath>
+#include <iostream>
+#include <limits>
 
-int main() {
-    int n;
-    std::cout << "Кількість векторів: ";
-    std::cin >> n;
+Vector::Vector() {}
 
-    std::vector<Vector> arr;
+Vector::Vector(const std::vector<double>& d) : data(d) {}
 
-    for (int i = 0; i < n; i++) {
-        int k;
-        std::cout << "\nКількість елементів у векторі " << i + 1 << ": ";
-        std::cin >> k;
+double Vector::length() const {
+    double s = 0;
+    for (double x : data) s += x * x;
+    return std::sqrt(s);
+}
 
-        std::vector<double> temp(k);
-        std::cout << "Введіть елементи: ";
-        for (int j = 0; j < k; j++) std::cin >> temp[j];
+double Vector::minElement() const {
+    double mn = std::numeric_limits<double>::max();
+    for (double x : data) if (x < mn) mn = x;
+    return mn;
+}
 
-        arr.emplace_back(temp);
-    }
+bool Vector::operator>(const Vector& other) const {
+    return this->length() > other.length();
+}
 
-    std::sort(arr.begin(), arr.end(),
-        [](const Vector& a, const Vector& b) {
-            return a.minElement() > b.minElement();
-        }
-    );
+double Vector::operator*(const Vector& other) const {
+    double sum = 0;
+    size_t n = std::min(data.size(), other.data.size());
+    for (size_t i = 0; i < n; i++) sum += data[i] * other.data[i];
+    return sum;
+}
 
-    std::cout << "\nВектори після сортування:\n";
-    for (auto& v : arr) {
-        v.print();
-        std::cout << "  min element = " << v.minElement() << "\n";
-    }
+size_t Vector::size() const {
+    return data.size();
+}
 
-    Vector maxV = arr.front();
-    Vector minV = arr.back();
-
-    std::cout << "\nСкалярний добуток:\n";
-
-    if (maxV.size() != minV.size()) {
-        std::cout << "Неможливо виконати скалярний добуток: різна кількість елементів.\n";
-    } else {
-        double result = maxV * minV;
-        maxV.print();
-        std::cout << "  і  ";
-        minV.print();
-        std::cout << "\nРезультат = " << result << "\n";
-    }
-
-    return 0;
+void Vector::print() const {
+    std::cout << "[ ";
+    for (double x : data) std::cout << x << " ";
+    std::cout << "]";
 }
