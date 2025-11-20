@@ -37,13 +37,17 @@ int main() {
     Vector maxV = arr.front();
     Vector minV = arr.back();
 
-    double result = maxV * minV;
-
     std::cout << "\nСкалярний добуток:\n";
-    maxV.print();
-    std::cout << "  і  ";
-    minV.print();
-    std::cout << "\nРезультат = " << result << "\n";
+
+    if (maxV.size() != minV.size()) {
+        std::cout << "Неможливо виконати скалярний добуток: різна кількість елементів.\n";
+    } else {
+        double result = maxV * minV;
+        maxV.print();
+        std::cout << "  і  ";
+        minV.print();
+        std::cout << "\nРезультат = " << result << "\n";
+    }
 
     return 0;
 }
